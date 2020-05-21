@@ -11,7 +11,7 @@ class Encuesta extends CI_Model {
         $documento = $this->input->post("documento");
         $nombres = $this->input->post("nombres");
         $apellidos = $this->input->post("apellidos");
-        $temperatura = $this->input->post("temperatura");
+        $temperatura = (float) $this->input->post("temperatura");
         $fiebre = $this->input->post("fiebre");
         $tos = $this->input->post("tos");
         $cefalea = $this->input->post("cefalea");
@@ -25,6 +25,22 @@ class Encuesta extends CI_Model {
         $pregunta1 = $this->input->post("pregunta1");
         $pregunta2 = $this->input->post("pregunta2");
         $idUsu = $this->input->post("idUsu");
+        //
+        $diabetes = $this->input->post("diabetes");
+        $hipertencion = $this->input->post("hipertencion");
+        $enfermedadesCorazon = $this->input->post("enfermedadesCorazon");
+        $fallaRenal = $this->input->post("fallaRenal");
+        $enfermedadPulmonar = $this->input->post("enfermedadPulmonar");
+        $hipotiroidismo = $this->input->post("hipotiroidismo");
+        $otroProblemasPulmonares = $this->input->post("otroProblemasPulmonares");
+        $enfermedadesAutoinmunes = $this->input->post("enfermedadesAutoinmunes");
+        $corticoides = $this->input->post("corticoides");
+        $inmunodeficiencia = $this->input->post("inmunodeficiencia");
+        $cancer = $this->input->post("cancer");
+        $sobrepeso = $this->input->post("sobrepeso");
+        $desnutricion = $this->input->post("desnutricion");
+        $fumador = $this->input->post("fumador");
+        $ningunoA = $this->input->post("ningunoA");
         //
         date_default_timezone_set('America/Bogota');
         //
@@ -47,12 +63,48 @@ class Encuesta extends CI_Model {
             'encuesta_pregunta1' => $pregunta1,
             'encuesta_pregunta2' => $pregunta2,
             'usu_id' => $idUsu,
-            'encuesta_fecha' => date('Y-m-d')
+            'encuesta_fecha' => date('Y-m-d'),
+            'enc_diabetes' => $diabetes,
+            'enc_hipertencion' => $hipertencion,
+            'enc_enfermedades_corazon' => $enfermedadesCorazon,
+            'enc_falla_renal' => $fallaRenal,
+            'enc_enfermedad_pulmonar' => $enfermedadPulmonar,
+            'enc_hipotiroidismo' => $hipotiroidismo,
+            'enc_problemas_pulmonares' => $otroProblemasPulmonares,
+            'enc_enfermedades_autoinmunes' => $enfermedadesAutoinmunes,
+            'enc_corticoides' => $corticoides,
+            'enc_inmunodeficiencia' => $inmunodeficiencia,
+            'enc_cancer' => $cancer,
+            'enc_sobrepeso' => $sobrepeso,
+            'enc_desnutricion' => $desnutricion,
+            'enc_fumador' => $fumador,
+            'enc_ninguno_antecedentes' => $ningunoA
         );
         //
         if ($this->db->insert('encuestacovid', $datos)) {
             //
-            return array('estado' => 'guardada');
+            if ($temperatura > 37) {
+                //
+                $datos2 = array(
+                    'emp_id' => $empresa,
+                    'per_codigo' => $documento,
+                    'alert_tipo' => 'Temperatura',
+                    'alert_descripcion' => "Temperatura Alta: $temperatura" . "°",
+                    'alert_fecha' => date('Y-m-d'),
+                    'alert_hora' => date('H-i-s'),
+                    'usu_id' => $idUsu
+                );
+                //
+                if ($this->db->insert('alertas', $datos2)) {
+                    //
+                    return array('estado' => 'guardada');
+                } else {
+                    //
+                    return array('estado' => 'error2');
+                }
+            } else {
+                return array('estado' => 'guardada');
+            }
         } else {
             //
             return array('estado' => 'error');
