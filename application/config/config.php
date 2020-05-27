@@ -23,8 +23,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-//$config['base_url'] = 'http://192.168.0.12/appNotificacionesLTPhp/';
 $config['base_url'] = 'http://192.168.0.12/appNotificacionesLTPhp/';
+//$config['base_url'] = 'http://167.71.248.182/appNotificacionesLTPhp/';
 
 /*
 |--------------------------------------------------------------------------
