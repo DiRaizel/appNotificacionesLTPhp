@@ -10,9 +10,10 @@ class Usuario extends CI_Model {
         $correo = $this->input->post("correo");
         $password = $this->input->post("password");
         //
-        $query = $this->db->query("select IdUsuario, Cedula, Rol, emp_id from "
-                . "usuario where Correo = '$correo' and Contrasena ="
-                . "'" . hash('MD5', $password) . "'");
+        $query = $this->db->query("select u.IdUsuario, u.Cedula, u.Rol, "
+                . "u.emp_id, e.emp_nombre from usuario u join empresa e on "
+                . "u.emp_id = e.emp_id where u.Correo = '$correo' and "
+                . "u.Contrasena ='" . hash('MD5', $password) . "'");
         //
         $datos = array();
         //
@@ -25,7 +26,8 @@ class Usuario extends CI_Model {
                     'idUsu' => $row->IdUsuario,
                     'cedula' => $row->Cedula,
                     'rol' => $row->Rol,
-                    'empresa' => $row->emp_id
+                    'idEmp' => $row->emp_id,
+                    'empresa' => $row->emp_nombre
                 );
             }
             //
