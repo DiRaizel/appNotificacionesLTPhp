@@ -11,9 +11,9 @@ class Usuario extends CI_Model {
         $password = $this->input->post("password");
         //
         $query = $this->db->query("select u.IdUsuario, u.Cedula, u.Rol, "
-                . "u.emp_id, e.emp_nombre from usuario u join empresa e on "
-                . "u.emp_id = e.emp_id where u.Correo = '$correo' and "
-                . "u.Contrasena ='" . hash('MD5', $password) . "'");
+                . "u.emp_id, u.Nombres, u.Apellidos, e.emp_nombre from usuario"
+                . " u join empresa e on u.emp_id = e.emp_id where u.Correo = "
+                . "'$correo' and u.Contrasena ='" . hash('MD5', $password) . "'");
         //
         $datos = array();
         //
@@ -25,6 +25,8 @@ class Usuario extends CI_Model {
                     'estado' => 'Entra',
                     'idUsu' => $row->IdUsuario,
                     'cedula' => $row->Cedula,
+                    'nombres' => $row->Nombres,
+                    'apellidos' => $row->Apellidos,
                     'rol' => $row->Rol,
                     'idEmp' => $row->emp_id,
                     'empresa' => $row->emp_nombre
