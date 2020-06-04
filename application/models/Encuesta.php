@@ -26,22 +26,6 @@ class Encuesta extends CI_Model {
         $pregunta2 = $this->input->post("pregunta2");
         $idUsu = $this->input->post("idUsu");
         //
-        $diabetes = $this->input->post("diabetes");
-        $hipertencion = $this->input->post("hipertencion");
-        $enfermedadesCorazon = $this->input->post("enfermedadesCorazon");
-        $fallaRenal = $this->input->post("fallaRenal");
-        $enfermedadPulmonar = $this->input->post("enfermedadPulmonar");
-        $hipotiroidismo = $this->input->post("hipotiroidismo");
-        $otroProblemasPulmonares = $this->input->post("otroProblemasPulmonares");
-        $enfermedadesAutoinmunes = $this->input->post("enfermedadesAutoinmunes");
-        $corticoides = $this->input->post("corticoides");
-        $inmunodeficiencia = $this->input->post("inmunodeficiencia");
-        $cancer = $this->input->post("cancer");
-        $sobrepeso = $this->input->post("sobrepeso");
-        $desnutricion = $this->input->post("desnutricion");
-        $fumador = $this->input->post("fumador");
-        $ningunoA = $this->input->post("ningunoA");
-        //
         date_default_timezone_set('America/Bogota');
         //
         $datos = array(
@@ -64,21 +48,6 @@ class Encuesta extends CI_Model {
             'encuesta_pregunta2' => $pregunta2,
             'usu_id' => $idUsu,
             'encuesta_fecha' => date('Y-m-d'),
-            'enc_diabetes' => $diabetes,
-            'enc_hipertencion' => $hipertencion,
-            'enc_enfermedades_corazon' => $enfermedadesCorazon,
-            'enc_falla_renal' => $fallaRenal,
-            'enc_enfermedad_pulmonar' => $enfermedadPulmonar,
-            'enc_hipotiroidismo' => $hipotiroidismo,
-            'enc_problemas_pulmonares' => $otroProblemasPulmonares,
-            'enc_enfermedades_autoinmunes' => $enfermedadesAutoinmunes,
-            'enc_corticoides' => $corticoides,
-            'enc_inmunodeficiencia' => $inmunodeficiencia,
-            'enc_cancer' => $cancer,
-            'enc_sobrepeso' => $sobrepeso,
-            'enc_desnutricion' => $desnutricion,
-            'enc_fumador' => $fumador,
-            'enc_ninguno_antecedentes' => $ningunoA
         );
         //
         if ($this->db->insert('encuestacovid', $datos)) {
@@ -215,10 +184,9 @@ class Encuesta extends CI_Model {
         $empresa = $this->input->post("empresa");
         $fecha = date('Y-m-d');
         //
-        $query = $this->db->query("SELECT enc_ninguno_antecedentes, "
-                . "encuesta_temperatura, encuesta_ninguna FROM encuestacovid "
-                . "where emp_id = $empresa and encuesta_fecha = '$fecha' and "
-                . "usu_id = $idUsu ");
+        $query = $this->db->query("SELECT encuesta_temperatura, encuesta_ninguna"
+                . " FROM encuestacovid where emp_id = $empresa and "
+                . "encuesta_fecha = '$fecha' and usu_id = $idUsu ");
         //
         $datos = array();
         //
@@ -226,35 +194,44 @@ class Encuesta extends CI_Model {
             //
             foreach ($query->result() as $row) {
                 //
-                if ($row->encuesta_temperatura > 37) {
+                $query2 = $this->db->query("SELECT enc_ninguno_antecedentes FROM"
+                        . " morbilidad where usu_id = $idUsu ");
+                //
+                if (count($query2->result()) > 0) {
                     //
-                    array_push($datos, array(
-                        'sql' => 'rojo'
-                    ));
-                } else {
-                    //
-                    $control = 0;
-                    //
-                    if ($row->encuesta_ninguna == 2) {
+                    foreach ($query2->result() as $row2) {
                         //
-                        $control++;
-                    }
-                    //
-                    if ($row->enc_ninguno_antecedentes == 2) {
-                        //
-                        $control++;
-                    }
-                    //
-                    if ($control === 2) {
-                        //
-                        array_push($datos, array(
-                            'sql' => 'naranja'
-                        ));
-                    } else {
-                        //
-                        array_push($datos, array(
-                            'sql' => 'verde'
-                        ));
+                        if ($row->encuesta_temperatura > 37) {
+                            //
+                            array_push($datos, array(
+                                'sql' => 'rojo'
+                            ));
+                        } else {
+                            //
+                            $control = 0;
+                            //
+                            if ($row->encuesta_ninguna == 2) {
+                                //
+                                $control++;
+                            }
+                            //
+                            if ($row2->enc_ninguno_antecedentes == 2) {
+                                //
+                                $control++;
+                            }
+                            //
+                            if ($control === 2) {
+                                //
+                                array_push($datos, array(
+                                    'sql' => 'naranja'
+                                ));
+                            } else {
+                                //
+                                array_push($datos, array(
+                                    'sql' => 'verde'
+                                ));
+                            }
+                        }
                     }
                 }
             }
@@ -285,22 +262,6 @@ class Encuesta extends CI_Model {
         $pregunta2 = $this->input->post("pregunta2");
         $idUsu = $this->input->post("idUsu");
         //
-        $diabetes = $this->input->post("diabetes");
-        $hipertencion = $this->input->post("hipertencion");
-        $enfermedadesCorazon = $this->input->post("enfermedadesCorazon");
-        $fallaRenal = $this->input->post("fallaRenal");
-        $enfermedadPulmonar = $this->input->post("enfermedadPulmonar");
-        $hipotiroidismo = $this->input->post("hipotiroidismo");
-        $otroProblemasPulmonares = $this->input->post("otroProblemasPulmonares");
-        $enfermedadesAutoinmunes = $this->input->post("enfermedadesAutoinmunes");
-        $corticoides = $this->input->post("corticoides");
-        $inmunodeficiencia = $this->input->post("inmunodeficiencia");
-        $cancer = $this->input->post("cancer");
-        $sobrepeso = $this->input->post("sobrepeso");
-        $desnutricion = $this->input->post("desnutricion");
-        $fumador = $this->input->post("fumador");
-        $ningunoA = $this->input->post("ningunoA");
-        //
         $idFam = $this->input->post("idFam");
         //
         date_default_timezone_set('America/Bogota');
@@ -325,21 +286,6 @@ class Encuesta extends CI_Model {
             'encuesta_pregunta2' => $pregunta2,
             'usu_id' => $idUsu,
             'encuesta_fecha' => date('Y-m-d'),
-            'enc_diabetes' => $diabetes,
-            'enc_hipertencion' => $hipertencion,
-            'enc_enfermedades_corazon' => $enfermedadesCorazon,
-            'enc_falla_renal' => $fallaRenal,
-            'enc_enfermedad_pulmonar' => $enfermedadPulmonar,
-            'enc_hipotiroidismo' => $hipotiroidismo,
-            'enc_problemas_pulmonares' => $otroProblemasPulmonares,
-            'enc_enfermedades_autoinmunes' => $enfermedadesAutoinmunes,
-            'enc_corticoides' => $corticoides,
-            'enc_inmunodeficiencia' => $inmunodeficiencia,
-            'enc_cancer' => $cancer,
-            'enc_sobrepeso' => $sobrepeso,
-            'enc_desnutricion' => $desnutricion,
-            'enc_fumador' => $fumador,
-            'enc_ninguno_antecedentes' => $ningunoA,
             'fam_id' => $idFam
         );
         //

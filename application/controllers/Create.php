@@ -25,8 +25,11 @@ class Create extends CI_Controller {
         //
         $this->load->model('Encuesta');
         $this->load->model('Familia');
+        $this->load->model('Morbilidad');
     }
 
+//---------------------------------Encuesta-------------------------------------
+//
     //
     function guardarEncuesta() {
         //
@@ -43,10 +46,30 @@ class Create extends CI_Controller {
         echo json_encode($rsp);
     }
 
+//----------------------------------Familia-------------------------------------
+//
     //
     function guardarFamiliar() {
         //
         $rsp = $this->Familia->guardarFamiliar();
+        //
+        echo json_encode($rsp);
+    }
+
+//---------------------------------Mobilidad------------------------------------
+//
+    //
+    function guardarMorbilidad() {
+        //
+        $rsp = $this->Morbilidad->guardarMorbilidad();
+        //
+        echo json_encode($rsp);
+    }
+    
+    //
+    function guardarMorbilidadF() {
+        //
+        $rsp = $this->Morbilidad->guardarMorbilidadF();
         //
         echo json_encode($rsp);
     }

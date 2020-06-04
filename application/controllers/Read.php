@@ -26,6 +26,7 @@ class Read extends CI_Controller {
         $this->load->model('Usuario');
         $this->load->model('Encuesta');
         $this->load->model('Familia');
+        $this->load->model('Morbilidad');
     }
 
     //
@@ -72,6 +73,22 @@ class Read extends CI_Controller {
     function validarSemaforo() {
         //
         $rsp = $this->Encuesta->validarSemaforo();
+        //
+        echo json_encode($rsp);
+    }
+
+    //
+    function validarMorbilidad() {
+        //
+        $rsp = $this->Morbilidad->validarMorbilidad();
+        //
+        echo json_encode($rsp);
+    }
+
+    //
+    function validarMorbilidadF() {
+        //
+        $rsp = $this->Morbilidad->validarMorbilidadF();
         //
         echo json_encode($rsp);
     }
