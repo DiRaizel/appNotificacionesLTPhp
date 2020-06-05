@@ -88,10 +88,11 @@ class Encuesta extends CI_Model {
         $empresa = $this->input->post("empresa");
         $fecha = date('Y-m-d');
         //
-        $query = $this->db->query("SELECT per_codigo, encuesta_nombres, "
-                . "encuesta_apellidos FROM encuestacovid where emp_id = "
-                . "$empresa and encuesta_fecha = '$fecha' order by "
-                . "encuesta_nombres asc");
+        $query = $this->db->query("SELECT e.per_codigo, e.encuesta_nombres, "
+                . "e.encuesta_apellidos, m.enc_ninguno_antecedentes FROM "
+                . "encuestacovid e join morbilidad m on e.usu_id = m.usu_id "
+                . "where e.emp_id = $empresa and e.encuesta_fecha = '$fecha' "
+                . "order by e.encuesta_nombres asc");
         //
         $datos = array();
         //
@@ -99,10 +100,18 @@ class Encuesta extends CI_Model {
             //
             foreach ($query->result() as $row) {
                 //
+                $morbilidad = 'No';
+                //
+                if ($row->enc_ninguno_antecedentes == 2) {
+                    //
+                    $morbilidad = 'Si';
+                }
+                //
                 array_push($datos, array(
                     'documento' => $row->per_codigo,
                     'nombres' => $row->encuesta_nombres,
-                    'apellidos' => $row->encuesta_apellidos
+                    'apellidos' => $row->encuesta_apellidos,
+                    'morbilidad' => $morbilidad
                 ));
             }
         }
