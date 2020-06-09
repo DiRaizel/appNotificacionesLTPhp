@@ -13,20 +13,29 @@ class Familia extends CI_Model {
         $nombres = $this->input->post("nombres");
         $apellidos = $this->input->post("apellidos");
         //
-        $datos = array(
-            'fam_documento' => $documento,
-            'fam_nombres' => $nombres,
-            'fam_apellidos' => $apellidos,
-            'usu_id' => $idUsu,
-            'emp_id' => $empresa
-        );
+        $query = $this->db->query("SELECT IdUsuario FROM usuario where Cedula "
+                . "= '$documento'");
         //
-        if ($this->db->insert('familia', $datos)) {
+        if (count($query->result()) > 0) {
             //
-            return array('estado' => 'guardado');
+            return array('estado' => 'usuario');
         } else {
             //
-            return array('estado' => 'error');
+            $datos = array(
+                'fam_documento' => $documento,
+                'fam_nombres' => $nombres,
+                'fam_apellidos' => $apellidos,
+                'usu_id' => $idUsu,
+                'emp_id' => $empresa
+            );
+            //
+            if ($this->db->insert('familia', $datos)) {
+                //
+                return array('estado' => 'guardado');
+            } else {
+                //
+                return array('estado' => 'error');
+            }
         }
     }
 
@@ -57,7 +66,7 @@ class Familia extends CI_Model {
                 if (count($query2->result()) > 0) {
                     //
                     $encuesta = 'Si';
-                }else{
+                } else {
                     //
                     $encuesta = 'No';
                 }

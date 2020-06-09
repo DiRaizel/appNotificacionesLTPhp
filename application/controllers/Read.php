@@ -38,6 +38,14 @@ class Read extends CI_Controller {
     }
 
     //
+    function recuperarPass() {
+        //
+        $rsp = $this->Usuario->recuperarPass();
+        //
+        echo $rsp;
+    }
+
+    //
     function cargarEncuestados() {
         //
         $rsp = $this->Encuesta->cargarEncuestados();
