@@ -48,6 +48,7 @@ class Encuesta extends CI_Model {
             'encuesta_pregunta2' => $pregunta2,
             'usu_id' => $idUsu,
             'encuesta_fecha' => date('Y-m-d'),
+            'encuesta_hora' => date('H:i:s')
         );
         //
         if ($this->db->insert('encuestacovid', $datos)) {
@@ -295,7 +296,8 @@ class Encuesta extends CI_Model {
             'encuesta_pregunta2' => $pregunta2,
             'usu_id' => $idUsu,
             'encuesta_fecha' => date('Y-m-d'),
-            'fam_id' => $idFam
+            'fam_id' => $idFam,
+            'encuesta_hora' => date('H:i:s')
         );
         //
         if ($this->db->insert('encuestacovidf', $datos)) {
@@ -320,7 +322,7 @@ class Encuesta extends CI_Model {
                         'alert_tipo' => 'Temperatura',
                         'alert_descripcion' => "Temperatura Alta: $temperatura" . "°",
                         'alert_fecha' => date('Y-m-d'),
-                        'alert_hora' => date('H-i-s'),
+                        'alert_hora' => date('H:i:s'),
                         'usu_id' => $idUsu,
                         'fam_id' => $idFam
                     );
